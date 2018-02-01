@@ -48,7 +48,7 @@ if __name__ == '__main__':
                                          'checkpoint_path': FLAGS.checkpoint_path, 'model_name': FLAGS. model_name,
                                          'checkpoint_exclude_scopes': FLAGS.checkpoint_exclude_scopes, 'train_dir': FLAGS. train_dir,
                                          'learning_rate': FLAGS.learning_rate, 'optimizer': FLAGS.optimizer,
-                                         'batch_size': FLAGS.batch_size, 'max_number_of_steps': steps}))
+                                         'batch_size': FLAGS.batch_size, 'max_number_of_steps': steps, 'clone_on_cpu': FLAGS.clone_on_cpu}))
         for l in p:
             print(p.strip())
 
