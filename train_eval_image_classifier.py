@@ -8,6 +8,7 @@ import os
 
 def parse_args(check=True):
     parser = argparse.ArgumentParser()
+    print('parser loaded')
     # train
     parser.add_argument('--dataset_name', type=str, default='quiz')
     parser.add_argument('--dataset_dir', type=str)
@@ -19,13 +20,17 @@ def parse_args(check=True):
     parser.add_argument('--optimizer', type=str, default='rmsprop')
     parser.add_argument('--batch_size', type=int, default=32)
     parser.add_argument('--clone_on_cpu', type=bool, default=False)
-
+    print('parser extra argument 1')
     # eval
     parser.add_argument('--dataset_split_name', type=str, default='validation')
     parser.add_argument('--eval_dir', type=str, default='validation')
     parser.add_argument('--max_num_batches', type=str, default='validation')
 
+    print('parser extra argument 2')
+
     FLAGS, unparsed = parser.parse_known_args()
+
+    print('parser extra argument finished')
     return FLAGS, unparsed
 
 
