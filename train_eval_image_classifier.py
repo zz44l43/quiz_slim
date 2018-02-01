@@ -20,7 +20,7 @@ def parse_args(check=True):
     parser.add_argument('--learning_rate', type=float, default=0.001)
     parser.add_argument('--optimizer', type=str, default='rmsprop')
     parser.add_argument('--batch_size', type=int, default=32)
-    parser.add_argument('--clone_on_cpu', type=bool, default=True)
+    parser.add_argument('--clone_on_cpu', type=bool, default=False)
     print('parser extra argument 1')
     # eval
     parser.add_argument('--dataset_split_name', type=str, default='validation')
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     print('change wording dir to [{0}]'.format(w_d))
     os.chdir(w_d)
 
-    step_per_epoch = 50000 // FLAGS.batch_size
+    step_per_epoch = 10000 // FLAGS.batch_size
     for i in range(30):
         steps = int(step_per_epoch * (i + 1))
         # train 1 epoch
