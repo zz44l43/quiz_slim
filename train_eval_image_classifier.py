@@ -45,7 +45,7 @@ if __name__ == '__main__':
     print('change wording dir to [{0}]'.format(w_d))
     os.chdir(w_d)
 
-    step_per_epoch = 10000 // FLAGS.batch_size
+    step_per_epoch = 70000 // FLAGS.batch_size
     for i in range(30):
         steps = int(step_per_epoch * (i + 1))
         # train 1 epoch
