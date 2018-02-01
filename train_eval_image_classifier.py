@@ -4,9 +4,10 @@ from __future__ import print_function
 
 import argparse
 import os
-
+import sys
 
 def parse_args(check=True):
+    print  sys.argv[1:]
     parser = argparse.ArgumentParser()
     print('parser loaded')
     # train
