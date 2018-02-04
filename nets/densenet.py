@@ -69,7 +69,8 @@ def densenet(images, num_classes=1001, is_training=False,
     growth = 24
     compression_rate = 0.5
     layers_per_block = 250
-    n_channels, first_conv_output_number = 16
+    n_channels =16
+    first_conv_output_number = 16
 
     def reduce_dim(input_feature):
         return int(int(input_feature.shape[-1]) * compression_rate)
