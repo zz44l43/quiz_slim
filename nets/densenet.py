@@ -86,11 +86,12 @@ def densenet(images, num_classes=1001, is_training=False,
             with tf.variable_scope("first_conv_layer"):
                 print("first_conv_layer")
                 net = slim.conv2d(images, first_conv_output_number, [3,3])
+                tf.Identity(net)
 
             #From the paper: 1st Desity block follow by a transition blcok
             with tf.variable_scope("block_1"):
                 print("first_block")
-                net = block(net, layers_per_block,growth,isTraining=is_training)
+                net = block(net, 6,growth,isTraining=is_training)
                 n_channels += growth*layers_per_block
                 with tf.variable_scope("transition_1"):
                     net = transition_block(net, n_channels, is_trainning=is_training)
