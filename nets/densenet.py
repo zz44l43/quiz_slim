@@ -85,7 +85,7 @@ def densenet(images, num_classes=15, is_training=False,
             # From the paper: Before enterting the first dense block, a convolution with 16 output channels is performed on the input images.
             with tf.variable_scope("first_conv_layer"):
                 print("first_conv_layer")
-            net = slim.conv2d(images, first_conv_output_number, [3,3])
+                net = slim.conv2d(images, first_conv_output_number, [3,3])
 
             #From the paper: 1st Desity block follow by a transition blcok
             with tf.variable_scope("block_1"):
