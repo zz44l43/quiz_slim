@@ -69,7 +69,7 @@ def densenet(images, num_classes=15, is_training=False,
     """
     growth = 24
     compression_rate = 0.5
-    layers_per_block = 12
+    layers_per_block = 6
     n_channels =16
     first_conv_output_number = 16
 
