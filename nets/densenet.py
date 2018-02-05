@@ -47,7 +47,7 @@ def block(net, layers, growth, scope='block', isTraining=False):
     return net
 
 
-def densenet(images, num_classes=1001, is_training=False,
+def densenet(images, num_classes=15, is_training=False,
              dropout_keep_prob=0.8,
              scope='densenet'):
     """Creates a variant of the densenet model.
@@ -78,39 +78,93 @@ def densenet(images, num_classes=1001, is_training=False,
     end_points = {}
 
     with tf.variable_scope(scope, 'DenseNet', [images, num_classes]) as sc:
-        end_points
         with slim.arg_scope(bn_drp_scope(is_training=is_training,
                                          keep_prob=dropout_keep_prob)) as ssc:
 
             # From the paper: Before enterting the first dense block, a convolution with 16 output channels is performed on the input images.
             # with tf.variable_scope("first_conv_layer"):
             #     print("first_conv_layer")
-            net = slim.conv2d(images, first_conv_output_number, [3,3])
+            # net = slim.conv2d(images, first_conv_output_number, [3,3])
+            #
+            # #From the paper: 1st Desity block follow by a transition blcok
+            # # with tf.variable_scope("block_1"):
+            # #     print("first_block")
+            # net = block(net, layers_per_block,growth,isTraining=is_training)
+            # n_channels += growth*layers_per_block
+            #     # with tf.variable_scope("transition_1"):
+            # net = transition_block(net, n_channels, is_trainning=is_training)
+            #
+            # #From the paper: 2nd Desity block follow by a transition blcok
+            # # with tf.variable_scope("block_2"):
+            #     # print("2nd_block")
+            # net = block(net, layers_per_block,growth,isTraining=is_training)
+            # n_channels += growth*layers_per_block
+            #     # with tf.variable_scope("transition_2"):
+            # net = transition_block(net, n_channels, is_trainning=is_training)
+            #
+            # # with tf.variable_scope("block_3"):
+            #     # print("thrid_block")
+            # net = block(net, layers_per_block,growth,isTraining=is_training)
+            # n_channels += growth*layers_per_block
+            #     # with tf.variable_scope("transition_layer_to_classes"):
+            # net = transition_to_classes(net, num_classes)
+            # logits = tf.reshape(net, [-1,num_classes])
+            # end_points = slim.utils.convert_collection_to_dict(end_points)
+            pass
+            ##########################
+            # Put your code here.
+            ##########################
 
-            #From the paper: 1st Desity block follow by a transition blcok
-            # with tf.variable_scope("block_1"):
-            #     print("first_block")
-            net = block(net, layers_per_block,growth,isTraining=is_training)
-            n_channels += growth*layers_per_block
-                # with tf.variable_scope("transition_1"):
-            net = transition_block(net, n_channels, is_trainning=is_training)
+            scope = 'conv1'
+            net = slim.conv2d(images, 16, [3, 3], scope = scope )
+            end_points[scope] = net
 
-            #From the paper: 2nd Desity block follow by a transition blcok
-            # with tf.variable_scope("block_2"):
-                # print("2nd_block")
-            net = block(net, layers_per_block,growth,isTraining=is_training)
-            n_channels += growth*layers_per_block
-                # with tf.variable_scope("transition_2"):
-            net = transition_block(net, n_channels, is_trainning=is_training)
+            scope = 'block1'
+            net = block(net, 6, growth, scope = scope )
+            end_points[scope] = net
 
-            # with tf.variable_scope("block_3"):
-                # print("thrid_block")
-            net = block(net, layers_per_block,growth,isTraining=is_training)
-            n_channels += growth*layers_per_block
-                # with tf.variable_scope("transition_layer_to_classes"):
-            net = transition_to_classes(net, num_classes)
-            logits = tf.reshape(net, [-1,num_classes])
-            end_points = slim.utils.convert_collection_to_dict(end_points)
+            scope = 'compress1'
+            net = bn_act_conv_drp(net, reduce_dim(net), [1, 1],  scope = scope)
+            end_points[scope] = net
+
+            scope = 'avgpool1'
+            net = slim.avg_pool2d(net, [2,2], stride = 2, scope = scope)
+            end_points[scope] = net
+
+            scope = 'block2'
+            net = block(net, 12, growth, scope = scope )
+            end_points[scope] = net
+
+            scope = 'compress2'
+            net = bn_act_conv_drp(net, reduce_dim(net), [1, 1],  scope = scope)
+            end_points[scope] = net
+
+            scope = 'avgpool2'
+            net = slim.avg_pool2d(net, [2,2], stride = 2, scope = scope)
+            end_points[scope] = net
+
+            scope = 'block3'
+            net = block(net, 24, growth, scope = scope )
+            end_points[scope] = net
+
+            scope = 'compress3'
+            net = bn_act_conv_drp(net, reduce_dim(net), [1, 1],  scope = scope)
+            end_points[scope] = net
+
+            scope = 'avgpool3'
+            net = slim.avg_pool2d(net, [2,2], stride = 2, scope = scope)
+            end_points[scope] = net
+
+            scope = 'block4'
+            net = block(net, 16, growth, scope = scope )
+            end_points[scope] = net
+
+
+            net = slim.avg_pool2d(net, net.shape[1:3])
+            biases_initializer = tf.constant_initializer(0.1)
+            net = slim.conv2d(net, num_classes, [1,1], biases_initializer = biases_initializer )
+            logits = tf.squeeze(net)
+
             return logits, end_points
 
 
