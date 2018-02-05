@@ -111,8 +111,7 @@ def densenet(images, num_classes=15, is_training=False,
                     net = transition_to_classes(net, num_classes)
 
             logits = tf.reshape(net, [-1,num_classes])
-            end_points = slim.utils.convert_collection_to_dict(end_points)
-            pass
+            # end_points = slim.utils.convert_collection_to_dict(end_points)
             ##########################
             # Put your code here.
             ##########################
