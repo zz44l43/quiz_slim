@@ -92,23 +92,23 @@ def densenet(images, num_classes=15, is_training=False,
                 print("first_block")
                 net = block(net, layers_per_block,growth,isTraining=is_training)
                 n_channels += growth*layers_per_block
-                    with tf.variable_scope("transition_1"):
-                        net = transition_block(net, n_channels, is_trainning=is_training)
+                with tf.variable_scope("transition_1"):
+                    net = transition_block(net, n_channels, is_trainning=is_training)
 
             #From the paper: 2nd Desity block follow by a transition blcok
             with tf.variable_scope("block_2"):
                 print("2nd_block")
                 net = block(net, layers_per_block,growth,isTraining=is_training)
                 n_channels += growth*layers_per_block
-                    with tf.variable_scope("transition_2"):
-                        net = transition_block(net, n_channels, is_trainning=is_training)
+                with tf.variable_scope("transition_2"):
+                    net = transition_block(net, n_channels, is_trainning=is_training)
 
             with tf.variable_scope("block_3"):
                 print("thrid_block")
                 net = block(net, layers_per_block,growth,isTraining=is_training)
                 n_channels += growth*layers_per_block
-                    with tf.variable_scope("transition_layer_to_classes"):
-                        net = transition_to_classes(net, num_classes)
+                with tf.variable_scope("transition_layer_to_classes"):
+                    net = transition_to_classes(net, num_classes)
 
             logits = tf.reshape(net, [-1,num_classes])
             end_points = slim.utils.convert_collection_to_dict(end_points)
