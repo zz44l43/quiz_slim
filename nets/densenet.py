@@ -18,7 +18,7 @@ def bn_act_conv_drp(current, num_outputs, kernel_size, scope='block', isTraining
     current = slim.conv2d(current, num_outputs, kernel_size, scope=scope + '_conv')
     if isTraining:
         current = slim.dropout(current, scope=scope + '_dropout')
-    current = slim.avg_pool2d(current, [2,2])
+    # current = slim.avg_pool2d(current, [2,2])
     return current
 
 def transition_block(net, num_outputs, kernel_size = [1,1], scope='transition', is_trainning=False):
