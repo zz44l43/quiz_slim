@@ -83,32 +83,32 @@ def densenet(images, num_classes=1001, is_training=False,
                                          keep_prob=dropout_keep_prob)) as ssc:
 
             # From the paper: Before enterting the first dense block, a convolution with 16 output channels is performed on the input images.
-            with tf.variable_scope("first_conv_layer"):
-                print("first_conv_layer")
-                net = slim.conv2d(images, first_conv_output_number, [3,3])
+            # with tf.variable_scope("first_conv_layer"):
+            #     print("first_conv_layer")
+            net = slim.conv2d(images, first_conv_output_number, [3,3])
 
             #From the paper: 1st Desity block follow by a transition blcok
-            with tf.variable_scope("block_1"):
-                print("first_block")
-                net = block(net, 6,growth,isTraining=is_training)
-                n_channels += growth*layers_per_block
-                with tf.variable_scope("transition_1"):
-                    net = transition_block(net, n_channels, is_trainning=is_training)
+            # with tf.variable_scope("block_1"):
+            #     print("first_block")
+            net = block(net, layers_per_block,growth,isTraining=is_training)
+            n_channels += growth*layers_per_block
+                # with tf.variable_scope("transition_1"):
+            net = transition_block(net, n_channels, is_trainning=is_training)
 
             #From the paper: 2nd Desity block follow by a transition blcok
-            with tf.variable_scope("block_2"):
-                print("2nd_block")
-                net = block(net, layers_per_block,growth,isTraining=is_training)
-                n_channels += growth*layers_per_block
-                with tf.variable_scope("transition_2"):
-                    net = transition_block(net, n_channels, is_trainning=is_training)
+            # with tf.variable_scope("block_2"):
+                # print("2nd_block")
+            net = block(net, layers_per_block,growth,isTraining=is_training)
+            n_channels += growth*layers_per_block
+                # with tf.variable_scope("transition_2"):
+            net = transition_block(net, n_channels, is_trainning=is_training)
 
-            with tf.variable_scope("block_3"):
-                print("thrid_block")
-                net = block(net, layers_per_block,growth,isTraining=is_training)
-                n_channels += growth*layers_per_block
-                with tf.variable_scope("transition_layer_to_classes"):
-                    net = transition_to_classes(net, num_classes)
+            # with tf.variable_scope("block_3"):
+                # print("thrid_block")
+            net = block(net, layers_per_block,growth,isTraining=is_training)
+            n_channels += growth*layers_per_block
+                # with tf.variable_scope("transition_layer_to_classes"):
+            net = transition_to_classes(net, num_classes)
             logits = tf.reshape(net, [-1,num_classes])
             end_points = slim.utils.convert_collection_to_dict(end_points)
             return logits, end_points
